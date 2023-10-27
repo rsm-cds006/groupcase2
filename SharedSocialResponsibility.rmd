@@ -1,0 +1,508 @@
+---
+title: "Shared Social Responsibility - Team A"
+output: 
+reprex::reprex_document:
+    venue: "gh"
+    advertise: FALSE
+    session_info: TRUE
+    style: TRUE
+    comment: "#;-)"
+    tidyverse_quiet: FALSE
+    std_out_err: TRUE
+knit: reprex::reprex_render
+---
+
+## Shared Social Responsibility
+Analysis done by: Allen Abraham, Ariana Hill, Hui Liu, Carrie Smith
+
+The experiment itself placed each rider into one of four conditions:
+
+$12.95 flat-rate price, i.e., FR
+
+$12.95 flat-rate price with 50% of revenue going to charity, i.e., FR Charity
+
+Name Your Own Price, i.e., NYOP
+
+Name Your Own Price with 50% of revenue going to charity, i.e., NYOP CharityOP 
+
+## Flat Rate Pricing
+#### Step 1: State the null and alternative hypothesis
+
+* Null Hypothesis: The proportion of customers who choose the flat rate pricing plan is same as the proportion of customers who choose flat rate with 50% going to charity pricing plan.
+
+* Alternative Hypothesis: The proportion of customers who choose the flat rate pricing plan is less than the proportion of customers who choose flat rate with 50% going to charity pricing plan.
+
+<br>
+
+#### Step 2: Determine appropriate model that can be used to test hypothesis
+
+   Since we are comparing two proportions, we will use the two-proportion z-test. The test statistic is given by: \[ \frac{\bar{p}_1 - \bar{p}_2}{\sqrt{\bar{p}_1(1-\bar{p}_1)/n_1 + \bar{p}_2(1-\bar{p}_2)/n_2}} \]
+
+<br>
+
+
+#### Step 3: Create a decision reticulate
+
+   We will use a significance level of 5%. If the p-value is less than 0.05, we will reject the null hypothesis.
+
+<br>
+
+#### Step 4: Analyze Sample Data
+
+```{python, eval = Sys.which("python") != "", python.reticulate = requireNamespace("reticulate", quietly = TRUE), echo=FALSE}
+from scipy.stats import norm
+import numpy as np
+
+
+# data
+FR_NumberSold_Total = 140
+FR_Riders_Total = 28224
+
+FRCharity_NumberSold_Total = 180
+FRCharity_Riders_Total = 30592
+
+# mean
+Prop_FR = FR_NumberSold_Total / FR_Riders_Total
+Prop_FRCharity = FRCharity_NumberSold_Total / FRCharity_Riders_Total
+print("Proportion of FR：", Prop_FR)
+print("Proportion of FR Charity：", Prop_FRCharity)
+
+test_statistic = (Prop_FR - Prop_FRCharity) / np.sqrt((Prop_FR*(1 - Prop_FR)/(FR_Riders_Total)) + (Prop_FRCharity*(1 - Prop_FRCharity)/(FRCharity_Riders_Total)))
+print("test statistic：", test_statistic)
+
+p_value = norm.cdf(test_statistic)
+
+print("p-value：", p_value)
+```
+
+<br>
+
+#### Step 5: Make a conclusion
+This was a one-sided proportion comparison test of the null hypothesis 
+that the true population proportion of customers who choose to purchase 
+photos with flat rate pricing plan is same as the proportion of customers 
+who choose to purchase photos with 50% going to charity pricing plan. Using 
+a significance level of 0.05, we do not reject the null hypothesis, and CANNOT 
+conclude that the true population proportion for people who bought 
+the photos at a fixed rate is less than the true population proportion for people 
+who bought photos with the charity option. The p-value for this test is 0.063. 
+This p-value represents the probability of observing a more extreme difference in sample proportions
+than the one observed given that there is no true difference in the population proportions.
+
+## NYOP Pricing
+
+#### Step 1: State the null and alternative hypothesis
+
+* Null Hypothesis: Riders are just as likely to buy the photos when the NYOP charity donation is involved vs. when it's not.
+
+* Alternative Hypothesis: Riders are not equally likely to buy the photos when the NYOP charity donation is involved.
+
+<br>
+
+#### Step 2: Determine appropriate model that can be used to test hypothesis
+
+Since we are comparing two proportions, we will use the two-proportion z-test. The test statistic is given by: \[ \frac{\bar{p}_1 - \bar{p}_2}{\sqrt{\bar{p}_1(1-\bar{p}_1)/n_1 + \bar{p}_2(1-\bar{p}_2)/n_2}} \]
+
+<br>
+
+#### Step 3: Create a decision reticulate
+
+We will use a significance level of 5%. If the p-value is less than 0.05, we will reject the null hypothesis.
+
+<br>
+
+#### Step 4: Analyze Sample Data
+```{python, eval = Sys.which("python") != "", python.reticulate = requireNamespace("reticulate", quietly = TRUE), echo=FALSE}
+from scipy.stats import norm
+import numpy as np
+
+# data
+NYOP_NumberSold_Total = 1137+1233
+NYOP_Riders_Total = 14077 +14186
+
+NYOP_C_NumberSold_Total = 539+628+626
+NYOP_C_Riders_Total = 12227+13741+18117
+
+# mean
+Mean_NYOP =  NYOP_NumberSold_Total/ NYOP_Riders_Total
+Mean_NYOP_C = NYOP_C_NumberSold_Total / NYOP_C_Riders_Total 
+
+# standard deviation
+import math
+std_NYOP = math.sqrt(sum([(1137/14077 - Mean_NYOP)**2, (1233/14186 - Mean_NYOP)**2]) / (2-1))
+std_NYOP_C = math.sqrt(sum([(539/12227 - Mean_NYOP_C)**2, (628/13741 - Mean_NYOP_C)**2,(626/18117 - Mean_NYOP_C)**2]) / (3-1))
+print("NYOP's mean：", Mean_NYOP)
+print("NYOP's sdt：", std_NYOP)
+print("NYOP Charity's mean：", Mean_NYOP_C)
+print("NYOP Charity's sdt：", std_NYOP_C)
+
+
+test_statistic = (Mean_NYOP - Mean_NYOP_C) / math.sqrt((Mean_NYOP*(1 - Mean_NYOP)/(14077+14186)) + (Mean_NYOP_C*(1 - Mean_NYOP_C)/(12227+13741+18117)))
+print("test statistic：", test_statistic)
+
+p_value = norm.cdf(test_statistic)
+
+print("p-value：", p_value)
+```
+
+<br>
+
+#### Step 5: Make a conclusion
+
+This was a one-sided proportion comparison test of the null hypothesis 
+that the true population proportion of customers who choose to purchase 
+photos with Name Your Own Price Plan is same as the proportion of customers 
+who choose to purchase photos Name Your Own Price Plan with 50% going to charity pricing plan. Using 
+a significance level of 0.05, we do not reject the null hypothesis, and CANNOT 
+conclude that the true population proportion for people who bought 
+the photos at a Name Your Own Price Plan is less than the true population proportion for people 
+who bought photos Name Your Own Price Plan with 50% going to charity pricing plan option. The p-value for this test is 0.063.
+This means that there's a 6.34% chance of observing a test statistic as extreme as, or more extreme than -1.5272 under 
+the null hypothesis. We fail to reject the null hypothesis. For the charity case, because we fail to reject the null, 
+it means that there's isn't enough evidence to say that riders are less likely to buy the photos when charity is involved.
+This p-value represents the probability of observing a more extreme difference in sample proportions
+than the one observed given that there is no true difference in the population proportions.
+
+## NYOP.csv Analysis
+We now jump into analyzing the two Name Your Own Price (NYOP) conditions. 
+The following plot displays the box plot of Price by Condition.
+
+```{python, eval = Sys.which("python") != "", python.reticulate = requireNamespace("reticulate", quietly = TRUE), echo=FALSE}
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# read in the NYOP csv 
+nyop = pd.read_csv('NYOP.csv')
+
+nyop['UnitPrice'] = nyop['Price'] / nyop['Number']
+
+nyop_plot = nyop.copy()
+
+nyop_plot['Number'] = nyop_plot['Number'].astype('category')
+
+plt.figure(figsize=(10, 6))
+sns.boxplot(data=nyop_plot, x='Number', y='Price', hue='Condition')
+plt.title('Box Plot of Unit Price by Condition')
+plt.xlabel('Condition')
+plt.ylabel('Price')
+plt.savefig('BoxPlot1.png')
+```
+```{R,echo=FALSE}
+knitr::include_graphics('BoxPlot1.png')
+```
+
+The following plot displays the box plot of Unit Price by Condition where the second quartile for NYOP Charity is higher than NYOP. 
+```{python, eval = Sys.which("python") != "", python.reticulate = requireNamespace("reticulate", quietly = TRUE), echo=FALSE}
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# read in the NYOP csv 
+nyop = pd.read_csv('NYOP.csv')
+
+nyop['UnitPrice'] = nyop['Price'] / nyop['Number']
+
+nyop_plot = nyop.copy()
+
+nyop_plot['Number'] = nyop_plot['Number'].astype('category')
+
+plt.figure(figsize=(10, 6))
+sns.boxplot(data=nyop_plot, x='Number', y='UnitPrice', hue='Condition')
+plt.title('Box Plot of Unit Price and Condition')
+plt.xlabel('Number')
+plt.ylabel('Unit Price')
+plt.savefig('BoxPlot2.png')
+```
+
+```{R,echo=FALSE}
+knitr::include_graphics('BoxPlot1.png')
+```
+
+These box plots indicate that there is a greater spread of prices paid for NYOP Charity vs. 
+NYOP both at at the Unit Price level and the overall price level. 
+They also indicate the maximum values for NYOP Charity far exceed the maximum values than NYOP. 
+
+In the table below, the Average Unit Price by Condition is displayed along with the total number of units sold. 
+These values echo the discrepancy seen in the box plots between the NYOP and NYOP Charity, with NYOP Charity on average being almost 450% that of the average NYOP amount.
+
+```{python, eval = Sys.which("python") != "", python.reticulate = requireNamespace("reticulate", quietly = TRUE), echo=FALSE}
+import pandas as pd
+import numpy as np
+
+# read in the NYOP csv 
+nyop = pd.read_csv('NYOP.csv')
+
+# calculate the unit price 
+nyop['AvgUnitPrice'] = nyop['Price'] / nyop['Number']
+
+
+nyop_avg_UnitPrice = nyop.groupby('Condition').agg({
+    'AvgUnitPrice': 'mean',
+    'Number': 'sum'
+}).reset_index()
+
+print(nyop_avg_UnitPrice)
+
+```
+
+
+The following are the hypotheses for testing the NYOP and NYOP Charity conditions.
+
+Ho: Riders are *less* likely to buy the photos when the charity donation is involved.
+
+Ha: Riders are *more* likely to buy the photos when the charity donation is involved.
+
+
+With the data provided, we can calculate the test statistic and the corresponding p-value.
+The calculations are as follows: 
+
+```{python, eval = Sys.which("python") != "", python.reticulate = requireNamespace("reticulate", quietly = TRUE), echo=FALSE}
+from scipy import stats
+import pandas as pd
+import numpy as np
+
+# read in the NYOP csv 
+nyop = pd.read_csv('NYOP.csv')
+
+nyop['UnitPrice'] = nyop['Price'] / nyop['Number']
+
+nyop_data = nyop[nyop['Condition'] == 'NYOP']['UnitPrice']
+nyop_charity_data = nyop[nyop['Condition'] == 'NYOP Charity']['UnitPrice']
+
+
+t_statistic, p_value = stats.ttest_ind(nyop_data, nyop_charity_data, equal_var=False)
+print("statistic test：", t_statistic)
+print("p-value：", p_value)
+
+alpha = 0.05
+if p_value < alpha:
+    print("Because the p-value is less than alpha, we reject the null hypothesis (Ho)")
+else:
+    print("Because the p-value is bigger than alpha, we accept th enull hypothesis (Ho)")
+```
+
+*Type 1 & Type 2 Error Analysis*
+
+Type 1 error: Also known as a "false positive" or "alpha error," occurs when we incorrectly reject a true null hypothesis.
+
+Type 2 error: Also known as a "false negative" or "beta error," occurs when we incorrectly fail to reject a false null hypothesis.
+
+The likelihood of a Type 1 error is denoted by alpha, and the likelihood of a Type 2 error is denoted by beta. In this statistical test, we are more likely to commit
+a Type 1 error, because we reject the null hypothesis. 
+ 
+
+*Filtering for people that purchased 1 photo vs. 6 photos*
+
+The following is the Average Unit Price by condition for people who purchased 1 photo. 
+```{python, eval = Sys.which("python") != "", python.reticulate = requireNamespace("reticulate", quietly = TRUE), echo=FALSE}
+import polars as pl
+from scipy.stats import ttest_ind
+
+nyopPl = pl.read_csv('NYOP.csv')
+
+unitPrice = (nyopPl['Price'] / nyopPl['Number']).alias('UnitPrice')
+
+nyopPl = nyopPl.with_columns(unitPrice)
+
+# nyop with one picture purchased
+nyop1 = (nyopPl
+         .filter(pl.col('Number') == 1)
+         .groupby('Condition')
+         .agg(pl.mean('UnitPrice').alias('AverageUnitPrice'))
+)
+
+print(nyop1)
+```
+
+The following is the Average Unit Price by condition for people who purchased 6 photos. 
+```{python, eval = Sys.which("python") != "", python.reticulate = requireNamespace("reticulate", quietly = TRUE), echo=FALSE}
+import polars as pl
+
+nyopPl = pl.read_csv('NYOP.csv')
+
+unitPrice = (nyopPl['Price'] / nyopPl['Number']).alias('UnitPrice')
+nyopPl = nyopPl.with_columns(unitPrice)
+
+# nyop with one picture purchased
+nyop1 = (nyopPl
+         .filter(pl.col('Number') == 6)
+         .groupby('Condition')
+         .agg(pl.mean('UnitPrice').alias('AverageUnitPrice'))
+)
+
+print(nyop1)
+```
+
+In both cases, the results are similar to what's displayed in the box plots earlier in the section. 
+The average unit price for the NYOP Charity condition is much higher than that of the NYOP condition, but more so when fewer pictures are purchased.
+In the case that one picture is pictured, the NYOP Charity average is ~400% that of the NYOP average.
+In the case that six pictures are purchased, the NYOP Charity average is ~300% that of the NYOP average.
+
+*Analysis Done by Hand vs. Statistical T-Tests*
+When looking at the subset of data for the popualtion that purchased six photos photo, it can be noted that the means are different, but compared to the one photo sub-population, not as much. 
+
+If we make the following hypothses, let's analyze what the results would be at a 95% confidence level.
+
+H0: When six photos are purchased, the Average Unit Price is the same for both NYOP conditions.
+
+H0: When six photos are purchased, the Average Unit Price is *not* the same for both NYOP conditions.
+
+
+After running a statistical test of the two populations with the six photo condition, the results are as follows: 
+```{python, eval = Sys.which("python") != "", python.reticulate = requireNamespace("reticulate", quietly = TRUE), echo=FALSE}
+import pandas as pd
+from scipy import stats
+
+# read in the NYOP csv 
+nyop = pd.read_csv('NYOP.csv')
+nyop['UnitPrice'] = nyop['Price'] / nyop['Number']
+
+nyop_1Photo = nyop[nyop['Number'] == 6]
+
+nyop_data = nyop_1Photo[nyop_1Photo['Condition'] == 'NYOP']
+nyopc_data = nyop_1Photo[nyop_1Photo['Condition'] == 'NYOP Charity']
+
+#print(nyop_data)
+#print(nyopc_data)
+
+# carry out t test
+t_statistic, p_value = stats.ttest_ind(nyop_data['UnitPrice'], nyopc_data['UnitPrice'], equal_var=False)
+
+print("test statistic", t_statistic)
+print("p-value：", p_value)
+```
+
+The p-value is > 0.05, which indicates we fail to reject our null hypothesis. This tracks with our observations that the means are closer together than what we saw with the one photo option. 
+
+## Economics 
+```{python}
+import pandas as pd
+
+df1 = pd.read_csv('Sales.csv')
+
+
+print(df1)
+```
+for the question (a), If the unit cost of making a photo is $1.20, the average daily profit under each of the four pricing strategies are: 
+```{python}
+#a
+
+photo_cost = 1.2
+
+flat_rate_price = 12.95
+
+#FR's average daily profit
+mean_fR_profit = (77 + 63)/2*(flat_rate_price - photo_cost)+ (4592.41+6688.57)/2
+print("FR's average daily profit: ",mean_fR_profit)
+
+#FR Charity's average daily profit
+mean_fR_C_profit = 0.5*((79 + 101)/2*(flat_rate_price - photo_cost)+ (6476.78+5845.94)/2)
+print("FR Charity's average daily profit: ",mean_fR_C_profit)
+
+#NYOP average daily profit
+#Avg（UnitPrice） - NYOP： 1.0404387568555757 which has been got in NYOP Pricing-2 file
+mean_NYOP_profit = (1137 + 1233)/2*1.0404387568555757+ (4845.27+7038.63)/2
+print("NYOP average daily profit: ",mean_NYOP_profit)
+
+#NYOP Charity average daily profit
+#Avg（UnitPrice） - NYOP Charity： 5.6804804392587505 which has been got in NYOP Pricing-2 file
+mean_NYOP_C_profit = 0.5*((539 + 628+ 626)/3*1.0404387568555757+ (5690.59+6003.44+8557.47)/3)
+print("NYOP Charity average daily profit: ",mean_NYOP_C_profit)
+```
+
+
+```{python}
+#b
+
+import pandas as pd
+
+# create data frame for each profit
+data = {'Strategy': ['FR', 'FR Charity', 'NYOP', 'NYOP Charity'],
+        'AverageDailyProfit': [mean_fR_profit, mean_fR_C_profit, mean_NYOP_profit, mean_NYOP_C_profit]}
+
+df_ranking = pd.DataFrame(data)
+
+df_ranking = df_ranking.sort_values(by='AverageDailyProfit', ascending=False)
+
+print("the ranking of the strategies in terms of profits：")
+print(df_ranking)
+```
+For the question(b), From the rank, we can get NYOP is the most profitable. 
+
+```{python}
+# per the result, NYOP is the most profitable
+
+#c
+
+#FR Charity's average daily profit includes the Charity
+mean_fR_C_profit_total = (79 + 101)/2*(flat_rate_price - photo_cost)+ (6476.78+5845.94)/2
+print("FR Charity's average daily profit includes the Charity: ",mean_fR_C_profit_total)
+
+#NYOP Charity average daily profit includes the Charity
+#Avg（UnitPrice） - NYOP Charity： 5.6804804392587505 which has been got in NYOP Pricing-2 file
+mean_NYOP_C_profit_total = (539 + 628+ 626)/3*1.0404387568555757+ (5690.59+6003.44+8557.47)/3
+print("NYOP Charity average daily profit includes the Charity: ",mean_NYOP_C_profit_total)
+```
+
+```{python}
+data = {'Strategy': ['FR', 'FR Charity-total', 'NYOP', 'NYOP Charity-total'],
+        'AverageDailyProfitTotal': [mean_fR_profit, mean_fR_C_profit_total, mean_NYOP_profit, mean_NYOP_C_profit_total]}
+
+df_ranking = pd.DataFrame(data)
+
+df_ranking = df_ranking.sort_values(by='AverageDailyProfitTotal', ascending=False)
+
+print("the ranking of the strategies in terms of total profits：")
+print(df_ranking)
+```
+For the question (C), if we consider societal profits, the NYOP Charity is most profitable based on the ranking of the profit.
+
+
+for the question (d), the additional societal profit we get is :
+```{python}
+# consider total profits, NYOP Charity is most profitable
+
+NYOP_Charity_total_year = mean_NYOP_C_profit_total * 365
+FR_Charity_total_year = mean_fR_C_profit_total * 365
+NYOP_year = mean_NYOP_profit * 365
+FR_year = mean_fR_profit * 365   
+
+additional_societal_profit_1 = NYOP_Charity_total_year - FR_Charity_total_year
+additional_societal_profit_2 = NYOP_Charity_total_year - NYOP_year
+additional_societal_profit_3 = NYOP_Charity_total_year - FR_year
+
+print('Yearly additional societal profit gap between NYOP Charity and FR Charity is :', additional_societal_profit_1)
+print('Yearly additional societal profit gap between NYOP Charity and NYOP is :', additional_societal_profit_2)
+print('Yearly additional societal profit gap between NYOP Charity and FR is :', additional_societal_profit_3)
+```
+For the question: e. Are merchandise sales a concern. I think it is big concern. since it occupied main portion of the profit.
+
+```{python}
+average_merchandise_fR = (4592.41 + 6688.57)/2
+print("FR's average daily merchandise profit: ", average_merchandise_fR)
+average_merchandise_fRCharity = (6476.78 + 5845.94)/2
+print("FR Charity's average daily merchandise profit: ", average_merchandise_fRCharity)
+average_merchandise_NYOP = (4845.27 + 7038.63)/2
+print("NYOP's average daily merchandise profit: ", average_merchandise_NYOP)
+average_merchandise_NYOPCharity = (5690.59 + 6003.44+8557.47)/3
+print("NYOP Charity's average daily merchandise profit: ", average_merchandise_NYOPCharity)
+
+proportion_merchandise_fR = average_merchandise_fR / mean_fR_profit
+proportion_merchandise_fRCharity = average_merchandise_fRCharity/mean_fR_C_profit_total
+proportion_merchandise_NYOP = average_merchandise_NYOP/mean_NYOP_profit
+proportion_merchandise_NYOPCharity = average_merchandise_NYOPCharity/mean_NYOP_C_profit_total
+
+data = {'Strategy': ['FR', 'FR Charity-total', 'NYOP', 'NYOP Charity-total'],
+        'ProportionOfMechandise': [proportion_merchandise_fR, proportion_merchandise_fRCharity, proportion_merchandise_NYOP, proportion_merchandise_NYOPCharity]}
+
+df_ranking = pd.DataFrame(data)
+
+df_ranking = df_ranking.sort_values(by='ProportionOfMechandise', ascending=False)
+
+print("the ranking of the strategies in terms of Proportion of Merchandise：")
+print(df_ranking)
+```
+From the proportion and the ranking. you can find merchandise is really important on the profit. It totally decides this business is loss or success. 
