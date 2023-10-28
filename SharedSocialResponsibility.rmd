@@ -1,7 +1,7 @@
 ---
 title: "Shared Social Responsibility - Team A"
 output: 
-reprex::reprex_document:
+  reprex::reprex_document:
     venue: "gh"
     advertise: FALSE
     session_info: TRUE
