@@ -378,7 +378,7 @@ print("p-value：", p_value)
 The p-value is > 0.05, which indicates we fail to reject our null hypothesis. This tracks with our observations that the means are closer together than what we saw with the one photo option. 
 
 ## Economics 
-```{python}
+```{python, eval = Sys.which("python") != "", python.reticulate = requireNamespace("reticulate", quietly = TRUE), echo=FALSE}
 import pandas as pd
 
 df1 = pd.read_csv('Sales.csv')
@@ -387,7 +387,7 @@ df1 = pd.read_csv('Sales.csv')
 print(df1)
 ```
 for the question (a), If the unit cost of making a photo is $1.20, the average daily profit under each of the four pricing strategies are: 
-```{python}
+```{python, eval = Sys.which("python") != "", python.reticulate = requireNamespace("reticulate", quietly = TRUE), echo=FALSE}
 #a
 
 photo_cost = 1.2
@@ -414,7 +414,7 @@ print("NYOP Charity average daily profit: ",mean_NYOP_C_profit)
 ```
 
 
-```{python}
+```{python, eval = Sys.which("python") != "", python.reticulate = requireNamespace("reticulate", quietly = TRUE), echo=FALSE}
 #b
 
 import pandas as pd
@@ -432,7 +432,7 @@ print(df_ranking)
 ```
 For the question(b), From the rank, we can get NYOP is the most profitable. 
 
-```{python}
+```{python, eval = Sys.which("python") != "", python.reticulate = requireNamespace("reticulate", quietly = TRUE), echo=FALSE}
 # per the result, NYOP is the most profitable
 
 #c
@@ -447,7 +447,7 @@ mean_NYOP_C_profit_total = (539 + 628+ 626)/3*1.0404387568555757+ (5690.59+6003.
 print("NYOP Charity average daily profit includes the Charity: ",mean_NYOP_C_profit_total)
 ```
 
-```{python}
+```{python, eval = Sys.which("python") != "", python.reticulate = requireNamespace("reticulate", quietly = TRUE), echo=FALSE}
 data = {'Strategy': ['FR', 'FR Charity-total', 'NYOP', 'NYOP Charity-total'],
         'AverageDailyProfitTotal': [mean_fR_profit, mean_fR_C_profit_total, mean_NYOP_profit, mean_NYOP_C_profit_total]}
 
@@ -462,7 +462,7 @@ For the question (C), if we consider societal profits, the NYOP Charity is most 
 
 
 for the question (d), the additional societal profit we get is :
-```{python}
+```{python, eval = Sys.which("python") != "", python.reticulate = requireNamespace("reticulate", quietly = TRUE), echo=FALSE}
 # consider total profits, NYOP Charity is most profitable
 
 NYOP_Charity_total_year = mean_NYOP_C_profit_total * 365
@@ -480,7 +480,7 @@ print('Yearly additional societal profit gap between NYOP Charity and FR is :', 
 ```
 For the question: e. Are merchandise sales a concern. I think it is big concern. since it occupied main portion of the profit.
 
-```{python}
+```{python, eval = Sys.which("python") != "", python.reticulate = requireNamespace("reticulate", quietly = TRUE), echo=FALSE}
 average_merchandise_fR = (4592.41 + 6688.57)/2
 print("FR's average daily merchandise profit: ", average_merchandise_fR)
 average_merchandise_fRCharity = (6476.78 + 5845.94)/2
